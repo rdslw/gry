@@ -1,0 +1,1270 @@
+<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+  <meta name="theme-color" content="#7557e8">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Literkowa Kraina">
+  <meta name="format-detection" content="telephone=no">
+  <title>Literkowa Kraina – nauka literek</title>
+  <style>
+    :root {
+      --ink: #332b52;
+      --muted: #746d91;
+      --paper: rgba(255, 255, 255, .92);
+      --purple: #7557e8;
+      --purple-dark: #5437c2;
+      --pink: #ff6fae;
+      --yellow: #ffd85e;
+      --green: #42c99a;
+      --red: #f35e70;
+      --blue: #51a8f5;
+      --shadow: 0 16px 36px rgba(66, 42, 128, .16);
+    }
+
+    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+    html, body { min-height: 100%; }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      font-family: ui-rounded, "Arial Rounded MT Bold", Nunito, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background:
+        radial-gradient(circle at 10% 12%, rgba(255,255,255,.8) 0 3px, transparent 4px),
+        radial-gradient(circle at 86% 18%, rgba(255,255,255,.7) 0 4px, transparent 5px),
+        linear-gradient(145deg, #ece8ff 0%, #fff3da 48%, #dff8f0 100%);
+      background-size: 80px 80px, 110px 110px, auto;
+      min-height: 100vh;
+      min-height: 100dvh;
+      overflow-x: hidden;
+      -webkit-user-select: none;
+      user-select: none;
+      overscroll-behavior: none;
+    }
+
+    button, input { font: inherit; }
+
+    button {
+      border: 0;
+      cursor: pointer;
+      color: inherit;
+      touch-action: manipulation;
+    }
+
+    button:focus-visible, input:focus-visible {
+      outline: 4px solid rgba(81, 168, 245, .45);
+      outline-offset: 3px;
+    }
+
+    .app {
+      width: min(100%, 860px);
+      min-height: 100vh;
+      min-height: 100dvh;
+      margin: 0 auto;
+      padding: max(14px, env(safe-area-inset-top)) max(14px, env(safe-area-inset-right)) max(18px, env(safe-area-inset-bottom)) max(14px, env(safe-area-inset-left));
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      min-height: 52px;
+      margin-bottom: 10px;
+    }
+
+    .brand-small {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      padding: 0;
+      text-align: left;
+      background: transparent;
+      font-size: clamp(1rem, 3vw, 1.25rem);
+      font-weight: 900;
+    }
+
+    body.game-active .brand-small {
+      padding-right: 12px;
+      border-radius: 16px;
+      background: rgba(255,255,255,.86);
+      box-shadow: 0 5px 0 rgba(84,55,194,.14);
+    }
+
+    body.game-active .brand-mark { transform: none; }
+
+    .brand-mark {
+      width: 42px;
+      height: 42px;
+      display: grid;
+      place-items: center;
+      border-radius: 14px;
+      color: #fff;
+      background: linear-gradient(145deg, #8d72f5, #6245d6);
+      box-shadow: 0 7px 0 #4e34b7;
+      transform: rotate(-4deg);
+      font-size: 1.5rem;
+      font-weight: 1000;
+    }
+
+    .top-actions { display: flex; gap: 8px; }
+
+    .icon-btn {
+      width: 46px;
+      height: 46px;
+      border-radius: 15px;
+      display: grid;
+      place-items: center;
+      background: rgba(255,255,255,.86);
+      box-shadow: 0 5px 0 rgba(84,55,194,.14);
+      font-size: 1.25rem;
+    }
+
+    .screen { display: none; flex: 1; animation: enter .32s ease both; }
+    .screen.active { display: flex; flex-direction: column; }
+
+    @keyframes enter {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .hero { text-align: center; margin: 2px 0 18px; }
+
+    .mascot-wrap {
+      position: relative;
+      width: 126px;
+      height: 108px;
+      margin: 0 auto 4px;
+    }
+
+    .mascot {
+      position: absolute;
+      inset: 13px 17px 5px;
+      display: grid;
+      place-items: center;
+      border-radius: 50% 50% 44% 44%;
+      background: linear-gradient(145deg, #8e74f2, #6850db);
+      border: 6px solid #fff;
+      box-shadow: 0 12px 24px rgba(84,55,194,.22);
+      font-size: 3.3rem;
+    }
+
+    .mascot-wrap::before, .mascot-wrap::after {
+      content: "★";
+      position: absolute;
+      color: var(--yellow);
+      font-size: 1.6rem;
+      animation: twinkle 1.8s ease-in-out infinite alternate;
+    }
+
+    .mascot-wrap::before { top: 2px; left: 4px; transform: rotate(-18deg); }
+    .mascot-wrap::after { right: 2px; top: 20px; animation-delay: .5s; }
+
+    @keyframes twinkle { to { transform: scale(1.25) rotate(15deg); } }
+
+    h1, h2, h3, p { margin-top: 0; }
+
+    .hero h1 {
+      margin-bottom: 5px;
+      font-size: clamp(2rem, 8vw, 3.7rem);
+      line-height: 1;
+      letter-spacing: -.04em;
+      color: var(--purple-dark);
+      text-shadow: 0 4px 0 #fff;
+    }
+
+    .hero p { margin-bottom: 0; color: var(--muted); font-weight: 700; }
+
+    .card {
+      background: var(--paper);
+      border: 2px solid rgba(255,255,255,.95);
+      border-radius: 28px;
+      box-shadow: var(--shadow);
+      padding: clamp(16px, 4vw, 26px);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+    }
+
+    .setup-card { width: 100%; max-width: 680px; margin: 0 auto; }
+
+    .step { margin-bottom: 20px; }
+    .step:last-of-type { margin-bottom: 12px; }
+
+    .step-title {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      margin: 0 0 11px;
+      font-size: 1.06rem;
+      font-weight: 900;
+    }
+
+    .step-number {
+      width: 29px;
+      height: 29px;
+      display: grid;
+      place-items: center;
+      border-radius: 10px;
+      color: #fff;
+      background: var(--purple);
+      font-size: .88rem;
+    }
+
+    .choice-row { display: grid; gap: 10px; }
+    .age-row { grid-template-columns: repeat(5, 1fr); }
+    .players-row { grid-template-columns: repeat(2, 1fr); }
+
+    .choice-btn {
+      min-height: 56px;
+      padding: 9px 6px;
+      border: 2px solid #e9e5fa;
+      border-radius: 17px;
+      background: #faf9ff;
+      font-weight: 900;
+      transition: transform .12s ease, border-color .12s ease, background .12s ease;
+    }
+
+    .choice-btn:active { transform: translateY(3px); }
+    .choice-btn.selected { border-color: var(--purple); color: var(--purple-dark); background: #eee9ff; box-shadow: inset 0 -4px 0 rgba(117,87,232,.09); }
+
+    .age-num { display: block; font-size: 1.45rem; line-height: 1; }
+    .age-label { display: block; margin-top: 4px; color: var(--muted); font-size: .7rem; }
+
+    .name-fields { display: grid; grid-template-columns: 1fr; gap: 12px; }
+    .name-fields.duo { grid-template-columns: 1fr 1fr; }
+
+    .player-field { min-width: 0; padding: 10px; border-radius: 18px; background: #f8f6ff; }
+
+    .profile-select {
+      width: 100%;
+      height: 40px;
+      margin-bottom: 8px;
+      padding: 0 34px 0 11px;
+      border: 2px solid #e5e0f5;
+      border-radius: 13px;
+      color: var(--purple-dark);
+      background: #fff;
+      font-size: 16px;
+      font-weight: 800;
+    }
+
+    .input-wrap { position: relative; }
+    .input-wrap span { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); font-size: 1.2rem; }
+
+    input {
+      width: 100%;
+      height: 56px;
+      border: 2px solid #e5e0f5;
+      border-radius: 17px;
+      padding: 0 14px 0 46px;
+      color: var(--ink);
+      background: #fff;
+      font-size: 16px;
+      font-weight: 800;
+      -webkit-user-select: text;
+      user-select: text;
+    }
+
+    input::placeholder { color: #aaa3bd; }
+
+    .primary-btn {
+      width: 100%;
+      min-height: 62px;
+      padding: 12px 18px;
+      border-radius: 20px;
+      color: #fff;
+      background: linear-gradient(180deg, #876bef, #6e4fdb);
+      box-shadow: 0 7px 0 #5338b7, 0 12px 20px rgba(84,55,194,.24);
+      font-size: 1.18rem;
+      font-weight: 1000;
+      letter-spacing: .01em;
+      transition: transform .12s ease, box-shadow .12s ease;
+    }
+
+    .primary-btn:active { transform: translateY(5px); box-shadow: 0 2px 0 #5338b7; }
+
+    .tiny-note { margin: 14px 0 0; text-align: center; color: var(--muted); font-size: .75rem; font-weight: 650; }
+
+    /* GAME */
+    .game-screen { gap: 12px; }
+
+    .scoreboard { display: grid; grid-template-columns: 1fr; gap: 8px; }
+    .scoreboard.duo { grid-template-columns: 1fr 1fr; }
+
+    .player-score {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 0;
+      padding: 10px 13px;
+      border: 3px solid transparent;
+      border-radius: 18px;
+      background: rgba(255,255,255,.74);
+      transition: border-color .2s, transform .2s;
+    }
+
+    .player-score.current { border-color: var(--yellow); transform: translateY(-2px); box-shadow: 0 7px 16px rgba(108,85,41,.13); }
+    .player-score:nth-child(2).current { border-color: var(--green); }
+
+    .avatar { width: 38px; height: 38px; flex: 0 0 auto; display: grid; place-items: center; border-radius: 13px; background: #e8e1ff; font-size: 1.3rem; }
+    .player-score:nth-child(2) .avatar { background: #d9f8ec; }
+    .score-info { min-width: 0; flex: 1; }
+    .score-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: .87rem; font-weight: 900; }
+    .score-value { color: var(--purple-dark); font-size: 1.05rem; font-weight: 1000; }
+    .player-score:nth-child(2) .score-value { color: #16815f; }
+
+    .progress-wrap { display: flex; align-items: center; gap: 10px; }
+    .progress-track { height: 12px; flex: 1; overflow: hidden; border: 2px solid rgba(255,255,255,.8); border-radius: 99px; background: rgba(117,87,232,.13); }
+    .progress-bar { width: 0; height: 100%; border-radius: inherit; background: linear-gradient(90deg, var(--pink), var(--yellow)); transition: width .4s ease; }
+    .round-label { min-width: 54px; color: var(--muted); font-size: .78rem; font-weight: 900; }
+
+    .question-card {
+      flex: 1;
+      min-height: 350px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .question-card::before {
+      content: "";
+      position: absolute;
+      width: 180px;
+      height: 180px;
+      top: -100px;
+      right: -80px;
+      border-radius: 50%;
+      background: rgba(255,216,94,.2);
+    }
+
+    .turn-pill {
+      align-self: center;
+      margin-bottom: 11px;
+      padding: 7px 14px;
+      border-radius: 99px;
+      color: var(--purple-dark);
+      background: #eee9ff;
+      font-size: .78rem;
+      font-weight: 900;
+    }
+
+    .prompt { margin: 0 0 6px; color: var(--muted); font-size: clamp(1rem, 3.5vw, 1.25rem); font-weight: 800; }
+
+    .target {
+      min-height: 104px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 0 16px;
+      color: var(--purple-dark);
+      font-size: clamp(4.4rem, 18vw, 7.5rem);
+      font-weight: 1000;
+      line-height: .95;
+      text-shadow: 0 5px 0 #e3dcff;
+    }
+
+    .target.word { font-size: clamp(2.8rem, 12vw, 5.4rem); letter-spacing: .08em; }
+    .target-picture { display: block; margin-right: 10px; font-size: .68em; text-shadow: none; }
+
+    .speak-btn {
+      align-self: center;
+      min-width: 120px;
+      min-height: 42px;
+      margin: -6px 0 17px;
+      padding: 8px 14px;
+      border-radius: 14px;
+      color: #3b6e9c;
+      background: #e6f4ff;
+      font-weight: 900;
+    }
+
+    .answers { display: grid; grid-template-columns: repeat(4, 1fr); gap: clamp(7px, 2vw, 12px); }
+
+    .answer-btn {
+      min-height: clamp(68px, 16vw, 94px);
+      border: 3px solid #e9e4f7;
+      border-radius: 22px;
+      color: var(--ink);
+      background: #fff;
+      box-shadow: 0 6px 0 #ddd7ed;
+      font-size: clamp(2rem, 8vw, 3.2rem);
+      font-weight: 1000;
+      transition: transform .12s, box-shadow .12s, background .2s;
+    }
+
+    .answer-btn:active { transform: translateY(5px); box-shadow: 0 1px 0 #ddd7ed; }
+    .answer-btn.correct { color: #fff; border-color: #2dac80; background: var(--green); box-shadow: 0 6px 0 #248f6b; animation: pop .32s ease; }
+    .answer-btn.wrong { color: #fff; border-color: #dd4056; background: var(--red); box-shadow: 0 6px 0 #bc3549; animation: shake .32s ease; }
+
+    @keyframes pop { 50% { transform: scale(1.1); } }
+    @keyframes shake { 25% { transform: translateX(-5px); } 75% { transform: translateX(5px); } }
+
+    .feedback {
+      min-height: 26px;
+      margin: 15px 0 0;
+      font-size: 1rem;
+      font-weight: 900;
+    }
+    .feedback.good { color: #198461; }
+    .feedback.try { color: #c63d50; }
+
+    /* RESULTS */
+    .result-card { width: 100%; max-width: 620px; margin: auto; text-align: center; }
+    .trophy { font-size: 5rem; line-height: 1; animation: trophy .8s cubic-bezier(.2,.8,.2,1) both; }
+    @keyframes trophy { from { transform: scale(0) rotate(-20deg); } 70% { transform: scale(1.18) rotate(7deg); } }
+    .result-card h2 { margin: 12px 0 5px; color: var(--purple-dark); font-size: clamp(1.8rem, 7vw, 2.8rem); }
+    .result-subtitle { color: var(--muted); font-weight: 700; }
+
+    .result-scores { display: grid; grid-template-columns: 1fr; gap: 9px; margin: 18px 0; }
+    .result-scores.duo { grid-template-columns: 1fr 1fr; }
+    .result-player { padding: 15px 8px; border-radius: 18px; background: #f1edff; font-weight: 900; }
+    .result-player:nth-child(2) { background: #e2f8f0; }
+    .result-points { display: block; margin-top: 3px; color: var(--purple-dark); font-size: 1.65rem; }
+
+    .sticker-box { margin: 14px 0 20px; padding: 13px; border: 2px dashed #e3b73e; border-radius: 18px; background: #fff9dd; }
+    .new-sticker { display: block; font-size: 2.7rem; }
+
+    .button-stack { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .secondary-btn { min-height: 58px; padding: 10px; border: 2px solid #ddd6f3; border-radius: 19px; color: var(--purple-dark); background: #fff; font-weight: 900; }
+
+    /* MODAL */
+    .modal-backdrop {
+      position: fixed;
+      z-index: 20;
+      inset: 0;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 18px;
+      background: rgba(41,32,72,.48);
+      backdrop-filter: blur(5px);
+      -webkit-backdrop-filter: blur(5px);
+    }
+    .modal-backdrop.open { display: flex; }
+    .modal { width: min(100%, 530px); max-height: min(82vh, 680px); overflow-y: auto; background: #fff; border-radius: 27px; padding: 22px; box-shadow: 0 25px 60px rgba(25,16,60,.35); }
+    .modal-head { display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-bottom: 15px; }
+    .modal-head h2 { margin: 0; color: var(--purple-dark); }
+    .close-btn { width: 42px; height: 42px; border-radius: 14px; background: #f1eef9; font-size: 1.15rem; }
+    .setting-row { display: flex; align-items: center; justify-content: space-between; gap: 14px; padding: 13px 2px; border-bottom: 1px solid #eeeaf8; font-weight: 800; }
+    .toggle { width: 58px; height: 33px; padding: 4px; border-radius: 99px; background: #ccc7d8; transition: background .2s; }
+    .toggle::after { content: ""; display: block; width: 25px; height: 25px; border-radius: 50%; background: #fff; box-shadow: 0 2px 6px rgba(0,0,0,.2); transition: transform .2s; }
+    .toggle.on { background: var(--green); }
+    .toggle.on::after { transform: translateX(25px); }
+    .settings-help { margin: 16px 0 0; padding: 12px; border-radius: 15px; color: var(--muted); background: #f6f3fd; font-size: .82rem; line-height: 1.45; font-weight: 700; }
+    .stats-filter { width: 100%; height: 46px; margin-bottom: 12px; padding: 0 12px; border: 2px solid #e5e0f5; border-radius: 14px; color: var(--ink); background: #fff; font-size: 16px; font-weight: 800; }
+    .stats-summary { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 15px; }
+    .stat { padding: 12px 6px; border-radius: 16px; background: #f4f1fd; text-align: center; }
+    .stat strong { display: block; color: var(--purple-dark); font-size: 1.35rem; }
+    .stickers { display: flex; flex-wrap: wrap; min-height: 68px; gap: 8px; padding: 10px; border-radius: 18px; background: #fff9e7; }
+    .sticker { width: 48px; height: 48px; display: grid; place-items: center; border-radius: 14px; background: #fff; box-shadow: 0 3px 8px rgba(71,51,30,.1); font-size: 1.8rem; }
+    .empty-state { width: 100%; align-self: center; color: var(--muted); text-align: center; font-size: .85rem; }
+    .reset-btn { width: 100%; margin-top: 18px; padding: 11px; border-radius: 15px; color: #b23d4c; background: #fff0f2; font-weight: 800; }
+    .confirm-copy { color: var(--muted); line-height: 1.5; }
+    .modal-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 20px; }
+
+    body.calm-mode *, body.calm-mode *::before, body.calm-mode *::after { animation: none !important; transition-duration: .01ms !important; }
+
+    .toast {
+      position: fixed;
+      z-index: 50;
+      left: 50%;
+      bottom: calc(20px + env(safe-area-inset-bottom));
+      max-width: calc(100% - 28px);
+      padding: 12px 18px;
+      border-radius: 14px;
+      color: #fff;
+      background: #382e59;
+      box-shadow: 0 10px 28px rgba(0,0,0,.22);
+      font-weight: 800;
+      transform: translate(-50%, 150%);
+      transition: transform .25s ease;
+    }
+    .toast.show { transform: translate(-50%, 0); }
+
+    .confetti { position: fixed; z-index: 40; top: -20px; width: 12px; height: 18px; pointer-events: none; animation: fall 1.8s linear forwards; }
+    @keyframes fall { to { transform: translate3d(var(--drift), 110vh, 0) rotate(720deg); } }
+
+    @media (max-width: 520px) {
+      .app { padding-left: 10px; padding-right: 10px; }
+      .hero { margin-top: -3px; }
+      .mascot-wrap { width: 100px; height: 84px; }
+      .mascot { inset: 8px 13px 3px; border-width: 4px; font-size: 2.55rem; }
+      .card { border-radius: 23px; }
+      .setup-card { padding: 15px; }
+      .step { margin-bottom: 16px; }
+      .choice-btn { min-height: 53px; }
+      .age-label { display: none; }
+      .name-fields.duo { grid-template-columns: 1fr; }
+      .question-card { min-height: 355px; padding: 16px 12px; }
+      .answers { grid-template-columns: repeat(2, 1fr); }
+      .answer-btn { min-height: 68px; }
+      .target { margin-bottom: 12px; }
+      .button-stack { grid-template-columns: 1fr; }
+    }
+
+    @media (max-height: 700px) and (orientation: landscape) {
+      .app { width: min(100%, 1000px); }
+      .topbar { min-height: 42px; margin-bottom: 4px; }
+      .icon-btn { width: 40px; height: 40px; }
+      .game-screen { gap: 7px; }
+      .question-card { min-height: 260px; padding: 12px 18px; }
+      .target { min-height: 68px; margin-bottom: 8px; font-size: 4rem; }
+      .target.word { font-size: 3rem; }
+      .prompt { margin-bottom: 2px; }
+      .speak-btn { margin-bottom: 9px; }
+      .answer-btn { min-height: 62px; }
+      .feedback { margin-top: 8px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; }
+    }
+  </style>
+</head>
+<body>
+  <main class="app" data-game-root data-game-state="setup">
+    <header class="topbar">
+      <button class="brand-small" id="menuBtn" aria-label="Literkowa Kraina">
+        <span class="brand-mark" id="menuBtnIcon">A</span><span id="menuBtnLabel">Literkowa Kraina</span>
+      </button>
+      <div class="top-actions">
+        <button class="icon-btn" id="statsBtn" aria-label="Osiągnięcia i statystyki">🏆</button>
+        <button class="icon-btn" id="settingsBtn" aria-label="Ustawienia">⚙️</button>
+      </div>
+    </header>
+
+    <section class="screen active" id="setupScreen" aria-labelledby="mainTitle">
+      <div class="hero">
+        <div class="mascot-wrap"><div class="mascot" aria-hidden="true">🦉</div></div>
+        <h1 id="mainTitle">Literkowa Kraina</h1>
+        <p>Rozpoznawaj litery, zdobywaj naklejki i baw się! ✨</p>
+      </div>
+
+      <div class="card setup-card">
+        <div class="step">
+          <h2 class="step-title"><span class="step-number">1</span> Ile lat ma gracz?</h2>
+          <div class="choice-row age-row" id="ageChoices" aria-label="Wybierz wiek">
+            <button class="choice-btn" data-age="4"><span class="age-num">4</span><span class="age-label">lata</span></button>
+            <button class="choice-btn selected" data-age="5"><span class="age-num">5</span><span class="age-label">lat</span></button>
+            <button class="choice-btn" data-age="6"><span class="age-num">6</span><span class="age-label">lat</span></button>
+            <button class="choice-btn" data-age="7"><span class="age-num">7</span><span class="age-label">lat</span></button>
+            <button class="choice-btn" data-age="8"><span class="age-num">8</span><span class="age-label">lat</span></button>
+          </div>
+        </div>
+
+        <div class="step">
+          <h2 class="step-title"><span class="step-number">2</span> Ilu graczy?</h2>
+          <div class="choice-row players-row" id="playerChoices">
+            <button class="choice-btn selected" data-count="1">🌟 Jeden gracz</button>
+            <button class="choice-btn" data-count="2">⚔️ Pojedynek</button>
+          </div>
+        </div>
+
+        <div class="step">
+          <h2 class="step-title"><span class="step-number">3</span> Jak masz na imię?</h2>
+          <div class="name-fields" id="nameFields">
+            <div class="player-field">
+              <select class="profile-select" id="savedPlayer1" aria-label="Wybierz zapisany profil pierwszego gracza"><option value="">＋ Nowy gracz</option></select>
+              <label class="input-wrap"><span aria-hidden="true">🟣</span><input id="name1" maxlength="14" autocomplete="off" placeholder="Wpisz imię" aria-label="Imię gracza pierwszego"></label>
+            </div>
+            <div class="player-field" id="name2Wrap" hidden>
+              <select class="profile-select" id="savedPlayer2" aria-label="Wybierz zapisany profil drugiego gracza"><option value="">＋ Nowy gracz</option></select>
+              <label class="input-wrap"><span aria-hidden="true">🟢</span><input id="name2" maxlength="14" autocomplete="off" placeholder="Wpisz imię" aria-label="Imię gracza drugiego"></label>
+            </div>
+          </div>
+        </div>
+
+        <button class="primary-btn" id="startBtn" data-smoke-action="start">GRAJ! 🚀</button>
+        <p class="tiny-note">10 zadań na gracza • bez reklam • działa offline po zapisaniu pliku</p>
+      </div>
+    </section>
+
+    <section class="screen game-screen" id="gameScreen" aria-label="Gra">
+      <div class="scoreboard" id="scoreboard"></div>
+      <div class="progress-wrap">
+        <div class="progress-track"><div class="progress-bar" id="progressBar"></div></div>
+        <span class="round-label" id="roundLabel">1 / 10</span>
+      </div>
+      <div class="card question-card">
+        <div class="turn-pill" id="turnPill">Teraz gra: Gracz</div>
+        <p class="prompt" id="prompt">Znajdź taką samą literę</p>
+        <div class="target" id="target">A</div>
+        <button class="speak-btn" id="speakBtn">🔊 Posłuchaj</button>
+        <div class="answers" id="answers"></div>
+        <p class="feedback" id="feedback" aria-live="polite"></p>
+      </div>
+    </section>
+
+    <section class="screen" id="resultScreen" aria-label="Wynik gry">
+      <div class="card result-card">
+        <div class="trophy" id="resultIcon">🏆</div>
+        <h2 id="resultTitle">Brawo!</h2>
+        <p class="result-subtitle" id="resultSubtitle">Literki nie mają przed Tobą tajemnic!</p>
+        <div class="result-scores" id="resultScores"></div>
+        <div class="sticker-box" id="stickerBox">
+          <div id="stickerAwards"><span class="new-sticker">🌈</span><strong>Nowa naklejka do kolekcji!</strong></div>
+        </div>
+        <div class="button-stack">
+          <button class="secondary-btn" id="homeBtn">🏠 Zmień graczy</button>
+          <button class="primary-btn" id="againBtn">Jeszcze raz ↻</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div class="modal-backdrop" id="settingsModal" role="dialog" aria-modal="true" aria-labelledby="settingsTitle">
+    <div class="modal">
+      <div class="modal-head"><h2 id="settingsTitle">⚙️ Ustawienia</h2><button class="close-btn" data-close="settingsModal" aria-label="Zamknij">✕</button></div>
+      <div class="setting-row"><span>🔔 Dźwięki gry</span><button class="toggle on" id="soundToggle" role="switch" aria-checked="true" aria-label="Dźwięki gry"></button></div>
+      <div class="setting-row"><span>🗣️ Czytanie poleceń</span><button class="toggle on" id="voiceToggle" role="switch" aria-checked="true" aria-label="Czytanie poleceń"></button></div>
+      <div class="setting-row"><span>✨ Animacje i konfetti</span><button class="toggle on" id="effectsToggle" role="switch" aria-checked="true" aria-label="Animacje i konfetti"></button></div>
+      <p class="settings-help">🔊 Przycisk „Posłuchaj” działa również wtedy, gdy automatyczne czytanie jest wyłączone. Lektor korzysta z polskiego głosu dostępnego na urządzeniu.<br><br><span id="storageStatus">✅ Profile są zapisywane na tym urządzeniu.</span></p>
+    </div>
+  </div>
+
+  <div class="modal-backdrop" id="statsModal" role="dialog" aria-modal="true" aria-labelledby="statsTitle">
+    <div class="modal">
+      <div class="modal-head"><h2 id="statsTitle">🏆 Osiągnięcia</h2><button class="close-btn" data-close="statsModal" aria-label="Zamknij">✕</button></div>
+      <select class="stats-filter" id="statsProfileSelect" aria-label="Wybierz profil do wyświetlenia"><option value="">Wszyscy gracze</option></select>
+      <div class="stats-summary">
+        <div class="stat"><strong id="gamesStat">0</strong><span>gier</span></div>
+        <div class="stat"><strong id="pointsStat">0</strong><span>punktów</span></div>
+        <div class="stat"><strong id="bestStat">0</strong><span>rekord</span></div>
+      </div>
+      <h3>Album naklejek</h3>
+      <div class="stickers" id="stickersList"><div class="empty-state">Zagraj rundę, aby zdobyć pierwszą naklejkę! ✨</div></div>
+      <button class="reset-btn" id="resetBtn">Wyczyść profile i postępy</button>
+    </div>
+  </div>
+
+  <div class="modal-backdrop" id="quitModal" role="dialog" aria-modal="true" aria-labelledby="quitTitle">
+    <div class="modal">
+      <div class="modal-head"><h2 id="quitTitle">🏠 Przerwać grę?</h2><button class="close-btn" data-close="quitModal" aria-label="Zamknij">✕</button></div>
+      <p class="confirm-copy">Wynik tej niedokończonej rundy nie zostanie zapisany. Czy chcesz wrócić do głównego menu?</p>
+      <div class="modal-actions">
+        <button class="secondary-btn" data-close="quitModal">Graj dalej</button>
+        <button class="primary-btn" id="confirmQuitBtn">Tak, zakończ</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast" role="status"></div>
+
+  <script>
+    (() => {
+      "use strict";
+
+      const $ = (selector) => document.querySelector(selector);
+      const $$ = (selector) => Array.from(document.querySelectorAll(selector));
+      const LETTERS = "AĄBCĆDEĘFGHIJKLŁMNŃOÓPRSŚTUWYZŹŻ".split("");
+      const SIMPLE_LETTERS = "ABCDEFGHIJKLMNOPRSTUWYZ".split("");
+      const STICKERS = ["🌈", "🦄", "🚀", "🦋", "🐳", "🍓", "⭐", "🐸", "🦖", "🎈", "🐝", "🌻", "🐙", "🍉", "🏰", "💎"];
+      const STORAGE_KEY = "literkowa-kraina:data";
+      const WORDS = [
+        { word: "ALA", icon: "👧" }, { word: "BAL", icon: "⚽" }, { word: "DOM", icon: "🏠" },
+        { word: "KOT", icon: "🐱" }, { word: "LAS", icon: "🌲" }, { word: "LIS", icon: "🦊" },
+        { word: "MAK", icon: "🌺" }, { word: "NOS", icon: "👃" }, { word: "OKO", icon: "👁️" },
+        { word: "PAS", icon: "👖" }, { word: "RAK", icon: "🦀" }, { word: "SOK", icon: "🧃" },
+        { word: "UL", icon: "🐝" }, { word: "WÓZ", icon: "🛒" }, { word: "ZĄB", icon: "🦷" },
+        { word: "ŻABA", icon: "🐸" }, { word: "RYBA", icon: "🐟" }, { word: "SOWA", icon: "🦉" },
+        { word: "KURA", icon: "🐔" }, { word: "MYSZ", icon: "🐭" }, { word: "LEW", icon: "🦁" },
+        { word: "AUTO", icon: "🚗" }, { word: "BUT", icon: "👟" }, { word: "SER", icon: "🧀" },
+        { word: "LODY", icon: "🍦" }, { word: "MAMA", icon: "👩" }, { word: "TATA", icon: "👨" },
+        { word: "PIES", icon: "🐶" }, { word: "KWIAT", icon: "🌷" }, { word: "BANAN", icon: "🍌" },
+        { word: "ROBOT", icon: "🤖" }, { word: "STATEK", icon: "🚢" }, { word: "MOTYL", icon: "🦋" },
+        { word: "SMOK", icon: "🐲" }, { word: "ZAMEK", icon: "🏰" }, { word: "JEŻ", icon: "🦔" }
+      ];
+
+      const defaults = { sound: true, voice: true, effects: true, games: 0, points: 0, best: 0, stickers: [], profiles: {}, name1: "", name2: "" };
+      let storageAvailable = true;
+      let saved = loadData();
+      let selectedAge = 5;
+      let playerCount = 1;
+      let state = null;
+      let audioContext = null;
+      let toastTimer = null;
+      let nextTimer = null;
+
+      function loadData() {
+        try {
+          const data = { ...defaults, ...JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}") };
+          if (!data.profiles || typeof data.profiles !== "object" || Array.isArray(data.profiles)) data.profiles = {};
+          if (!Array.isArray(data.stickers)) data.stickers = [];
+          data.profiles = { ...data.profiles };
+          data.stickers = [...data.stickers];
+
+          // Migrate progress saved by the first version into a named profile.
+          if (data.name1 && !Object.keys(data.profiles).length) {
+            data.profiles[profileKey(data.name1)] = {
+              name: data.name1,
+              games: Number(data.games) || 0,
+              points: Number(data.points) || 0,
+              best: Number(data.best) || 0,
+              stickers: [...data.stickers]
+            };
+          }
+          return data;
+        } catch (_) {
+          storageAvailable = false;
+          return { ...defaults, profiles: {}, stickers: [] };
+        }
+      }
+
+      function saveData() {
+        try {
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(saved));
+          storageAvailable = true;
+          return true;
+        } catch (_) {
+          storageAvailable = false;
+          return false;
+        }
+      }
+
+      function profileKey(name) { return name.trim().toLocaleLowerCase("pl"); }
+
+      function ensureProfile(name) {
+        const key = profileKey(name);
+        if (!saved.profiles[key]) saved.profiles[key] = { name, games: 0, points: 0, best: 0, stickers: [] };
+        saved.profiles[key].name = name;
+        if (!Array.isArray(saved.profiles[key].stickers)) saved.profiles[key].stickers = [];
+        return saved.profiles[key];
+      }
+
+      function sample(array) { return array[Math.floor(Math.random() * array.length)]; }
+
+      function shuffled(array) {
+        const copy = [...array];
+        for (let i = copy.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [copy[i], copy[j]] = [copy[j], copy[i]];
+        }
+        return copy;
+      }
+
+      function uniqueOptions(correct, pool, count = 4) {
+        return shuffled([correct, ...shuffled(pool.filter(x => x !== correct)).slice(0, count - 1)]);
+      }
+
+      function showScreen(id) {
+        $$(".screen").forEach(screen => screen.classList.toggle("active", screen.id === id));
+        const inGame = id === "gameScreen";
+        $("[data-game-root]").dataset.gameState = inGame ? "playing" : (id === "resultScreen" ? "result" : "setup");
+        document.body.classList.toggle("game-active", inGame);
+        $("#menuBtnIcon").textContent = inGame ? "←" : "A";
+        $("#menuBtnLabel").textContent = inGame ? "Przerwij grę" : "Literkowa Kraina";
+        $("#menuBtn").setAttribute("aria-label", inGame ? "Przerwij grę i wróć do menu" : "Literkowa Kraina");
+        window.scrollTo(0, 0);
+      }
+
+      function setChoice(container, attribute, value) {
+        container.querySelectorAll("button").forEach(btn => btn.classList.toggle("selected", btn.dataset[attribute] === String(value)));
+      }
+
+      function toast(message) {
+        const el = $("#toast");
+        el.textContent = message;
+        el.classList.add("show");
+        clearTimeout(toastTimer);
+        toastTimer = setTimeout(() => el.classList.remove("show"), 2200);
+      }
+
+      function setToggle(button, enabled) {
+        button.classList.toggle("on", enabled);
+        button.setAttribute("aria-checked", String(enabled));
+      }
+
+      function tone(kind) {
+        if (!saved.sound) return;
+        try {
+          const AudioCtx = window.AudioContext || window.webkitAudioContext;
+          if (!AudioCtx) return;
+          if (!audioContext) audioContext = new AudioCtx();
+          if (audioContext.state === "suspended") audioContext.resume();
+          const now = audioContext.currentTime;
+          const notes = kind === "good" ? [523.25, 659.25, 783.99] : [220, 180];
+          notes.forEach((frequency, index) => {
+            const osc = audioContext.createOscillator();
+            const gain = audioContext.createGain();
+            osc.type = kind === "good" ? "sine" : "triangle";
+            osc.frequency.value = frequency;
+            gain.gain.setValueAtTime(.0001, now + index * .09);
+            gain.gain.exponentialRampToValueAtTime(.13, now + index * .09 + .015);
+            gain.gain.exponentialRampToValueAtTime(.0001, now + index * .09 + .18);
+            osc.connect(gain).connect(audioContext.destination);
+            osc.start(now + index * .09);
+            osc.stop(now + index * .09 + .2);
+          });
+        } catch (_) { /* Audio is an enhancement. */ }
+      }
+
+      function speak(text, force = false) {
+        if ((!saved.voice && !force) || !("speechSynthesis" in window)) return;
+        window.speechSynthesis.cancel();
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.lang = "pl-PL";
+        utterance.rate = selectedAge <= 5 ? .72 : .82;
+        utterance.pitch = 1.08;
+        const polishVoice = window.speechSynthesis.getVoices().find(v => v.lang.toLowerCase().startsWith("pl"));
+        if (polishVoice) utterance.voice = polishVoice;
+        window.speechSynthesis.speak(utterance);
+      }
+
+      function vibrate(pattern) {
+        if (navigator.vibrate) navigator.vibrate(pattern);
+      }
+
+      function buildQuestion(age, recentKeys) {
+        let question;
+        let attempts = 0;
+        do {
+          question = createQuestion(age);
+          attempts++;
+        } while (recentKeys.includes(question.key) && attempts < 12);
+        return question;
+      }
+
+      function createQuestion(age) {
+        if (age === 4) {
+          const correct = sample(SIMPLE_LETTERS);
+          return {
+            key: `same-${correct}`,
+            prompt: "Znajdź taką samą literę",
+            target: correct,
+            targetClass: "",
+            correct,
+            options: uniqueOptions(correct, SIMPLE_LETTERS),
+            speech: `Znajdź literę ${correct}`
+          };
+        }
+
+        if (age === 5) {
+          if (Math.random() < .52) {
+            const correct = sample(SIMPLE_LETTERS);
+            return {
+              key: `case-${correct}`,
+              prompt: "Znajdź małą literę do pary",
+              target: correct,
+              targetClass: "",
+              correct: correct.toLowerCase(),
+              options: uniqueOptions(correct, SIMPLE_LETTERS).map(x => x.toLowerCase()),
+              speech: `Znajdź małą literę ${correct}`
+            };
+          }
+          return firstLetterQuestion(false, true);
+        }
+
+        if (age === 6) {
+          return Math.random() < .58 ? firstLetterQuestion(true, false) : caseQuestionWithPolish();
+        }
+
+        if (age === 7) return missingLetterQuestion(false);
+        return Math.random() < .68 ? missingLetterQuestion(true) : lastLetterQuestion();
+      }
+
+      function caseQuestionWithPolish() {
+        const correct = sample(LETTERS);
+        const upperToLower = Math.random() < .5;
+        return {
+          key: `polish-case-${correct}-${upperToLower}`,
+          prompt: upperToLower ? "Która mała litera pasuje?" : "Która wielka litera pasuje?",
+          target: upperToLower ? correct : correct.toLowerCase(),
+          targetClass: "",
+          correct: upperToLower ? correct.toLowerCase() : correct,
+          options: uniqueOptions(correct, LETTERS).map(x => upperToLower ? x.toLowerCase() : x),
+          speech: `Znajdź parę do litery ${correct}`
+        };
+      }
+
+      function firstLetterQuestion(includePolish, hideFirst) {
+        const candidates = WORDS.filter(item => includePolish || SIMPLE_LETTERS.includes(item.word[0]));
+        const item = sample(candidates);
+        const correct = item.word[0];
+        const pool = includePolish ? LETTERS : SIMPLE_LETTERS;
+        const shownWord = hideFirst ? `_${item.word.slice(1)}` : item.word;
+        return {
+          key: `first-${item.word}`,
+          prompt: "Jaką literą zaczyna się to słowo?",
+          target: `<span class="target-picture">${item.icon}</span>${shownWord}`,
+          targetClass: "word",
+          correct,
+          options: uniqueOptions(correct, pool),
+          speech: `${item.word}. Jaką literą zaczyna się słowo ${item.word}?`
+        };
+      }
+
+      function missingLetterQuestion(harder) {
+        const candidates = WORDS.filter(item => harder ? item.word.length >= 4 : item.word.length <= 4);
+        const item = sample(candidates);
+        const possible = [];
+        for (let i = 0; i < item.word.length; i++) {
+          if (i > 0 || harder) possible.push(i);
+        }
+        const index = sample(possible);
+        const correct = item.word[index];
+        const shown = item.word.split("");
+        shown[index] = "_";
+        return {
+          key: `missing-${item.word}-${index}`,
+          prompt: "Której litery brakuje?",
+          target: `<span class="target-picture">${item.icon}</span>${shown.join("")}`,
+          targetClass: "word",
+          correct,
+          options: uniqueOptions(correct, LETTERS),
+          speech: `${item.word}. Której litery brakuje w słowie ${item.word}?`
+        };
+      }
+
+      function lastLetterQuestion() {
+        const item = sample(WORDS);
+        const correct = item.word[item.word.length - 1];
+        return {
+          key: `last-${item.word}`,
+          prompt: "Jaką literą kończy się to słowo?",
+          target: `<span class="target-picture">${item.icon}</span>${item.word}`,
+          targetClass: "word",
+          correct,
+          options: uniqueOptions(correct, LETTERS),
+          speech: `${item.word}. Jaką literą kończy się słowo ${item.word}?`
+        };
+      }
+
+      function startGame() {
+        clearTimeout(nextTimer);
+        const name1 = $("#name1").value.trim();
+        const name2 = $("#name2").value.trim();
+        if (!name1) {
+          toast("Wpisz imię gracza 😊");
+          $("#name1").focus();
+          return;
+        }
+        if (playerCount === 2 && !name2) {
+          toast("Wpisz imię drugiego gracza 😊");
+          $("#name2").focus();
+          return;
+        }
+        if (playerCount === 2 && name1.toLocaleLowerCase("pl") === name2.toLocaleLowerCase("pl")) {
+          toast("Wpisz dwa różne imiona 😊");
+          $("#name2").focus();
+          return;
+        }
+
+        saved.name1 = name1;
+        saved.name2 = name2;
+        ensureProfile(name1);
+        if (playerCount === 2) ensureProfile(name2);
+        if (!saveData()) toast("Profile nie mogą zostać zapisane w tym trybie przeglądarki");
+        renderProfileChoices();
+        state = {
+          players: [
+            { name: name1, score: 0, correct: 0, streak: 0, turns: 0 },
+            ...(playerCount === 2 ? [{ name: name2, score: 0, correct: 0, streak: 0, turns: 0 }] : [])
+          ],
+          current: 0,
+          totalTurns: playerCount * 10,
+          completedTurns: 0,
+          locked: false,
+          recentKeys: [],
+          question: null
+        };
+        renderScoreboard();
+        showScreen("gameScreen");
+        nextQuestion();
+      }
+
+      function renderScoreboard() {
+        const board = $("#scoreboard");
+        board.className = `scoreboard${state.players.length === 2 ? " duo" : ""}`;
+        board.innerHTML = state.players.map((player, i) => `
+          <div class="player-score ${i === state.current ? "current" : ""}">
+            <span class="avatar">${i === 0 ? "🟣" : "🟢"}</span>
+            <div class="score-info"><div class="score-name">${escapeHtml(player.name)}</div><div class="score-value">⭐ ${player.score}</div></div>
+          </div>`).join("");
+      }
+
+      function nextQuestion() {
+        if (state.completedTurns >= state.totalTurns) {
+          finishGame();
+          return;
+        }
+        state.locked = false;
+        const player = state.players[state.current];
+        state.question = buildQuestion(selectedAge, state.recentKeys);
+        state.recentKeys = [...state.recentKeys.slice(-4), state.question.key];
+
+        $("#turnPill").textContent = state.players.length === 2 ? `Teraz gra: ${player.name}` : `Powodzenia, ${player.name}!`;
+        $("#prompt").textContent = state.question.prompt;
+        const target = $("#target");
+        target.className = `target ${state.question.targetClass}`.trim();
+        target.innerHTML = state.question.target;
+        $("#feedback").textContent = "";
+        $("#feedback").className = "feedback";
+        $("#roundLabel").textContent = `${player.turns + 1} / 10`;
+        $("#progressBar").style.width = `${(state.completedTurns / state.totalTurns) * 100}%`;
+        $("#answers").innerHTML = state.question.options.map(option =>
+          `<button class="answer-btn" data-answer="${escapeHtml(option)}" aria-label="Odpowiedź ${escapeHtml(option)}">${escapeHtml(option)}</button>`
+        ).join("");
+        $("#answers").querySelectorAll("button").forEach(button => button.addEventListener("click", answer));
+        renderScoreboard();
+        if (saved.voice) setTimeout(() => speak(state.question.speech), 300);
+      }
+
+      function answer(event) {
+        if (state.locked) return;
+        state.locked = true;
+        const picked = event.currentTarget.dataset.answer;
+        const correct = picked === state.question.correct;
+        const player = state.players[state.current];
+        player.turns++;
+        state.completedTurns++;
+
+        if (correct) {
+          player.streak++;
+          player.correct++;
+          const bonus = Math.min(5, Math.max(0, player.streak - 1));
+          player.score += 10 + bonus;
+          event.currentTarget.classList.add("correct");
+          $("#feedback").textContent = bonus ? `Świetnie! Seria ${player.streak} 🔥 +${10 + bonus}` : "Brawo! +10 punktów ⭐";
+          $("#feedback").className = "feedback good";
+          tone("good");
+          vibrate(35);
+        } else {
+          player.streak = 0;
+          event.currentTarget.classList.add("wrong");
+          const rightButton = Array.from($("#answers").children).find(btn => btn.dataset.answer === state.question.correct);
+          if (rightButton) rightButton.classList.add("correct");
+          $("#feedback").textContent = `Prawie! To litera ${state.question.correct} 💪`;
+          $("#feedback").className = "feedback try";
+          tone("wrong");
+          vibrate([45, 45, 45]);
+        }
+        renderScoreboard();
+        $("#progressBar").style.width = `${(state.completedTurns / state.totalTurns) * 100}%`;
+        nextTimer = setTimeout(() => {
+          if (!state) return;
+          if (state.players.length === 2) state.current = state.current === 0 ? 1 : 0;
+          nextQuestion();
+        }, correct ? 1050 : 1550);
+      }
+
+      function finishGame() {
+        if (window.speechSynthesis) window.speechSynthesis.cancel();
+        const ranked = [...state.players].sort((a, b) => b.score - a.score);
+        const tie = ranked.length === 2 && ranked[0].score === ranked[1].score;
+        let title;
+        if (state.players.length === 1) title = state.players[0].correct >= 8 ? `Brawo, ${state.players[0].name}!` : `Dobra robota, ${state.players[0].name}!`;
+        else title = tie ? "Mamy remis!" : `Wygrywa ${ranked[0].name}!`;
+
+        $("#resultIcon").textContent = tie ? "🤝" : (ranked[0].correct >= 8 ? "🏆" : "🌟");
+        $("#resultTitle").textContent = title;
+        $("#resultSubtitle").textContent = state.players.length === 1
+          ? `Rozpoznane litery: ${state.players[0].correct} z 10`
+          : (tie ? "Wspaniała i bardzo wyrównana zabawa!" : "Gratulacje dla obojga graczy!");
+
+        const scores = $("#resultScores");
+        scores.className = `result-scores${state.players.length === 2 ? " duo" : ""}`;
+        scores.innerHTML = state.players.map(player => `<div class="result-player">${escapeHtml(player.name)}<span class="result-points">⭐ ${player.score}</span><small>${player.correct}/10 poprawnych</small></div>`).join("");
+
+        const awards = state.players.map(player => {
+          const profile = ensureProfile(player.name);
+          const earnedSticker = sample(STICKERS);
+          const isNew = !profile.stickers.includes(earnedSticker);
+          if (isNew) profile.stickers.push(earnedSticker);
+          if (!saved.stickers.includes(earnedSticker)) saved.stickers.push(earnedSticker);
+          profile.games++;
+          profile.points += player.score;
+          profile.best = Math.max(profile.best, player.score);
+          return { player, earnedSticker, isNew };
+        });
+        $("#stickerAwards").innerHTML = awards.map(award => `
+          <div><span class="new-sticker">${award.earnedSticker}</span><strong>${escapeHtml(award.player.name)}: ${award.isNew ? "nowa naklejka!" : "naklejka za grę!"}</strong></div>
+        `).join("");
+
+        const pointsThisGame = state.players.reduce((sum, player) => sum + player.score, 0);
+        saved.games++;
+        saved.points += pointsThisGame;
+        saved.best = Math.max(saved.best, ...state.players.map(player => player.score));
+        saveData();
+        renderProfileChoices();
+        updateStats();
+        showScreen("resultScreen");
+        if (saved.effects && (ranked[0].correct >= 7 || state.players.length === 2)) confetti();
+        tone("good");
+      }
+
+      function confetti() {
+        const colors = ["#ff6fae", "#ffd85e", "#42c99a", "#7557e8", "#51a8f5"];
+        for (let i = 0; i < 34; i++) {
+          const piece = document.createElement("i");
+          piece.className = "confetti";
+          piece.style.left = `${Math.random() * 100}%`;
+          piece.style.background = sample(colors);
+          piece.style.setProperty("--drift", `${Math.random() * 180 - 90}px`);
+          piece.style.animationDelay = `${Math.random() * .5}s`;
+          piece.style.animationDuration = `${1.4 + Math.random() * .9}s`;
+          document.body.appendChild(piece);
+          setTimeout(() => piece.remove(), 2600);
+        }
+      }
+
+      function escapeHtml(value) {
+        return String(value).replace(/[&<>'"]/g, char => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", "'": "&#39;", '"': "&quot;" }[char]));
+      }
+
+      function sortedProfiles() {
+        return Object.entries(saved.profiles).sort((a, b) => a[1].name.localeCompare(b[1].name, "pl"));
+      }
+
+      function renderProfileChoices() {
+        const profiles = sortedProfiles();
+        [1, 2].forEach(number => {
+          const select = $(`#savedPlayer${number}`);
+          const currentName = $(`#name${number}`).value.trim();
+          select.innerHTML = '<option value="">＋ Nowy gracz</option>' + profiles.map(([key, profile]) =>
+            `<option value="${escapeHtml(key)}">👤 ${escapeHtml(profile.name)} · ⭐ ${profile.points || 0}</option>`
+          ).join("");
+          const currentKey = profileKey(currentName);
+          select.value = saved.profiles[currentKey] ? currentKey : "";
+        });
+
+        const statsSelect = $("#statsProfileSelect");
+        const selected = statsSelect.value;
+        statsSelect.innerHTML = '<option value="">Wszyscy gracze</option>' + profiles.map(([key, profile]) =>
+          `<option value="${escapeHtml(key)}">👤 ${escapeHtml(profile.name)}</option>`
+        ).join("");
+        statsSelect.value = saved.profiles[selected] ? selected : "";
+      }
+
+      function updateStats() {
+        const profile = saved.profiles[$("#statsProfileSelect").value];
+        const stats = profile || saved;
+        const stickers = Array.isArray(stats.stickers) ? stats.stickers : [];
+        $("#gamesStat").textContent = stats.games || 0;
+        $("#pointsStat").textContent = stats.points || 0;
+        $("#bestStat").textContent = stats.best || 0;
+        $("#stickersList").innerHTML = stickers.length
+          ? stickers.map(sticker => `<span class="sticker">${sticker}</span>`).join("")
+          : '<div class="empty-state">Zagraj rundę, aby zdobyć pierwszą naklejkę! ✨</div>';
+      }
+
+      function openModal(id) {
+        $(id).classList.add("open");
+        $(id).querySelector(".close-btn").focus();
+      }
+
+      function closeModal(modal) { modal.classList.remove("open"); }
+
+      function quitGame() {
+        clearTimeout(nextTimer);
+        nextTimer = null;
+        if (window.speechSynthesis) window.speechSynthesis.cancel();
+        state = null;
+        closeModal($("#quitModal"));
+        showScreen("setupScreen");
+      }
+
+      function updateStorageStatus() {
+        $("#storageStatus").textContent = storageAvailable
+          ? "✅ Profile i nagrody są zapisywane na tym urządzeniu."
+          : "⚠️ Ta przeglądarka blokuje zapis. Otwórz grę przez Safari pod adresem HTTPS.";
+      }
+
+      function chooseSavedPlayer(number) {
+        const key = $(`#savedPlayer${number}`).value;
+        if (key && saved.profiles[key]) $(`#name${number}`).value = saved.profiles[key].name;
+      }
+
+      $("#ageChoices").addEventListener("click", event => {
+        const button = event.target.closest("button[data-age]");
+        if (!button) return;
+        selectedAge = Number(button.dataset.age);
+        setChoice($("#ageChoices"), "age", selectedAge);
+      });
+
+      $("#playerChoices").addEventListener("click", event => {
+        const button = event.target.closest("button[data-count]");
+        if (!button) return;
+        playerCount = Number(button.dataset.count);
+        setChoice($("#playerChoices"), "count", playerCount);
+        $("#name2Wrap").hidden = playerCount !== 2;
+        $("#nameFields").classList.toggle("duo", playerCount === 2);
+      });
+
+      $("#startBtn").addEventListener("click", startGame);
+      $("#againBtn").addEventListener("click", startGame);
+      $("#homeBtn").addEventListener("click", () => { state = null; showScreen("setupScreen"); });
+      $("#speakBtn").addEventListener("click", () => speak(state.question.speech, true));
+      $("#menuBtn").addEventListener("click", () => {
+        if (document.body.classList.contains("game-active") && state) openModal("#quitModal");
+        else if ($("#resultScreen").classList.contains("active")) { state = null; showScreen("setupScreen"); }
+      });
+      $("#confirmQuitBtn").addEventListener("click", quitGame);
+      $("#settingsBtn").addEventListener("click", () => { updateStorageStatus(); openModal("#settingsModal"); });
+      $("#statsBtn").addEventListener("click", () => { renderProfileChoices(); updateStats(); openModal("#statsModal"); });
+      $("#savedPlayer1").addEventListener("change", () => chooseSavedPlayer(1));
+      $("#savedPlayer2").addEventListener("change", () => chooseSavedPlayer(2));
+      $("#statsProfileSelect").addEventListener("change", updateStats);
+      $("#name1").addEventListener("input", () => { $("#savedPlayer1").value = saved.profiles[profileKey($("#name1").value)] ? profileKey($("#name1").value) : ""; });
+      $("#name2").addEventListener("input", () => { $("#savedPlayer2").value = saved.profiles[profileKey($("#name2").value)] ? profileKey($("#name2").value) : ""; });
+
+      $("#soundToggle").addEventListener("click", event => {
+        saved.sound = !saved.sound;
+        setToggle(event.currentTarget, saved.sound);
+        saveData();
+        if (saved.sound) tone("good");
+      });
+
+      $("#voiceToggle").addEventListener("click", event => {
+        saved.voice = !saved.voice;
+        setToggle(event.currentTarget, saved.voice);
+        if (!saved.voice && window.speechSynthesis) window.speechSynthesis.cancel();
+        saveData();
+      });
+
+      $("#effectsToggle").addEventListener("click", event => {
+        saved.effects = !saved.effects;
+        setToggle(event.currentTarget, saved.effects);
+        document.body.classList.toggle("calm-mode", !saved.effects);
+        saveData();
+      });
+
+      $$("[data-close]").forEach(button => button.addEventListener("click", () => closeModal(button.closest(".modal-backdrop"))));
+      $$(".modal-backdrop").forEach(backdrop => backdrop.addEventListener("click", event => { if (event.target === backdrop) closeModal(backdrop); }));
+      document.addEventListener("keydown", event => { if (event.key === "Escape") $$(".modal-backdrop.open").forEach(closeModal); });
+
+      $("#resetBtn").addEventListener("click", () => {
+        if (!confirm("Czy na pewno usunąć wszystkie profile, punkty i albumy naklejek?")) return;
+        const preferences = { sound: saved.sound, voice: saved.voice, effects: saved.effects };
+        saved = { ...defaults, ...preferences, profiles: {}, stickers: [], name1: "", name2: "" };
+        saveData();
+        $("#name1").value = "";
+        $("#name2").value = "";
+        renderProfileChoices();
+        updateStats();
+        toast("Profile i postępy zostały wyczyszczone");
+      });
+
+      // Restore only convenient, non-sensitive preferences.
+      $("#name1").value = saved.name1 || "";
+      $("#name2").value = saved.name2 || "";
+      setToggle($("#soundToggle"), saved.sound);
+      setToggle($("#voiceToggle"), saved.voice);
+      setToggle($("#effectsToggle"), saved.effects);
+      document.body.classList.toggle("calm-mode", !saved.effects);
+      saveData();
+      renderProfileChoices();
+      updateStorageStatus();
+      updateStats();
+    })();
+  </script>
+</body>
+</html>
