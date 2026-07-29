@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env -S uv run --script
 """Generate the repository's game catalog from top-level game.json files."""
 
 from __future__ import annotations
@@ -158,7 +158,7 @@ def main() -> int:
     if args.check:
         current = OUTPUT.read_text(encoding="utf-8") if OUTPUT.exists() else ""
         if current != generated:
-            print("index.html is stale; run: python3 scripts/build-index.py", file=sys.stderr)
+            print("index.html is stale; run: uv run python scripts/build-index.py", file=sys.stderr)
             return 1
         print("index.html is up to date")
         return 0

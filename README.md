@@ -18,7 +18,7 @@ memory/
 Główny `index.html` jest generowany z metadanych gier poleceniem:
 
 ```bash
-python3 scripts/build-index.py
+uv run python scripts/build-index.py
 ```
 
 ## Codzienny workflow tworzenia gry

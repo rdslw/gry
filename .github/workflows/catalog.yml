@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: astral-sh/setup-uv@v6
         with:
-          python-version: "3.13"
-      - run: python3 scripts/build-index.py --check
+          version: "0.12.0"
+      - run: uv run python scripts/build-index.py --check
