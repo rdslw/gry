@@ -49,11 +49,11 @@ Każda opublikowana gra używa tego minimalnego formatu:
 - Domyślnie pracuj w orb, sprawdź zmianę przez portal Amp, a po akceptacji użyj Ship do `main`.
 - Commit powinien obejmować jedną spójną grę lub zmianę; nie modyfikuj innych gier bez potrzeby.
 - Dla zmian wspólnej infrastruktury, ryzykownych przebudów lub równoległej pracy użyj brancha i Pull Requesta zamiast bezpośredniego Ship.
-- Przed Ship sprawdź ładowanie bez błędów konsoli, start, główną interakcję, restart i osiągalny stan końcowy.
-- Dla zmian UI sprawdź mały ekran, orientację mobilną, obsługę dotyku i czytelne cele dotykowe.
+- Przed Ship sprawdź błędy konsoli, start, główną interakcję, restart i stan końcowy; dla UI także mały ekran, orientację i dotyk.
 
-## Świadome ograniczenia
-
+## Decyzje i odłożone rozszerzenia
+- Zachowuj historię powstania gry w czytelnych commitach i nie usuwaj trailera `Amp-Thread` łączącego commit z wątkiem.
+- Dobieraj testy do ryzyka: każda gra wymaga smoke testu, a automatyczne E2E dodawaj dla istotnych lub podatnych na regresje zachowań.
 - Nie wprowadzaj frameworka, bundlera, wspólnej biblioteki UI ani backendu bez konkretnej potrzeby gry.
 - Nie przenoś powtarzalnego kodu do `shared/`, dopóki co najmniej dwie gry nie potrzebują stabilnego wspólnego rozwiązania.
 - Nie używaj portalu Amp jako hostingu produkcyjnego; publiczną wersję zapewnia GitHub Pages.
