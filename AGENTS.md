@@ -40,7 +40,7 @@ Każda opublikowana gra używa tego minimalnego formatu:
 ## Smoke test przed Ship
 - Testuj przez lokalny serwer HTTP, nigdy `file://`; zacznij od `curl --fail` oczekującego na URL gry.
 - Jeśli brak Rodney, zainstaluj go przez `uv tool install rodney==0.4.0`, nigdy przez `pip`.
-- Uruchom świeżą sesję `rodney start --local`; usuń `.rodney/` przed i po teście oraz zawsze wykonaj `rodney stop`.
+- Używaj `rodney start --local` i zawsze wykonaj `rodney stop`; zachowaj ignorowany `.rodney/`, aby ponownie używać profilu.
 - Otwórz URL, poczekaj na `[data-game-root]`, sprawdź tytuł, kliknij start i potwierdź oczekiwany `data-game-state`.
 - Przy błędzie zapisz screenshot w `.amp/in/artifacts/`; rutynowych screenshotów nie commituj.
 - Rodney nie zbiera wstecz błędów konsoli; jeśli to istotne, dodaj `window.__smokeErrors` albo mocniejszy test.

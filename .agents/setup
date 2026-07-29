@@ -1,0 +1,50 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+uv_version="0.12.0"
+rodney_version="0.4.0"
+export PATH="$HOME/.local/bin:$PATH"
+
+if ! command -v uv >/dev/null 2>&1 || ! uv --version | grep -Fq "uv $uv_version "; then
+  echo "Installing uv $uv_version"
+  curl -LsSf "https://astral.sh/uv/$uv_version/install.sh" |
+    env UV_UNMANAGED_INSTALL="$HOME/.local/bin" sh
+fi
+
+if ! command -v rodney >/dev/null 2>&1 || ! rodney --version | grep -Fq "$rodney_version"; then
+  echo "Installing Rodney $rodney_version"
+  uv tool install --force "rodney==$rodney_version"
+fi
+
+echo "Preparing Rodney's Chromium"
+server_log="$(mktemp)"
+server_pid=""
+cleanup() {
+  rodney stop >/dev/null 2>&1 || true
+  if [[ -n "$server_pid" ]]; then
+    kill "$server_pid" >/dev/null 2>&1 || true
+    wait "$server_pid" 2>/dev/null || true
+  fi
+  rm -f "$server_log"
+}
+trap cleanup EXIT
+
+uv run python -m http.server 8765 --bind 127.0.0.1 >"$server_log" 2>&1 &
+server_pid=$!
+for _ in {1..50}; do
+  curl --fail --silent http://127.0.0.1:8765/ >/dev/null 2>&1 && break
+  sleep 0.1
+done
+curl --fail --silent --show-error http://127.0.0.1:8765/ >/dev/null
+
+rodney start --local
+rodney open http://127.0.0.1:8765/
+rodney assert 'document.body !== null'
+rodney stop
+kill "$server_pid"
+wait "$server_pid" 2>/dev/null || true
+server_pid=""
+rm -f "$server_log"
+trap - EXIT
+
+echo "Orb setup complete"
