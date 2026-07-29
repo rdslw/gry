@@ -41,7 +41,7 @@ Każda opublikowana gra używa tego minimalnego formatu:
 
 - Główny `index.html` ma być generowany z plików `*/game.json` przez `scripts/build-index.py`, nie edytowany ręcznie.
 - Po dodaniu gry lub zmianie metadanych uruchom generator i dołącz zaktualizowany indeks do tego samego commita.
-- Jeśli generator udostępnia `--check`, uruchom `python3 scripts/build-index.py --check` przed wysłaniem zmian.
+- Przed wysłaniem zmian uruchom `python3 scripts/build-index.py --check` i napraw nieaktualny katalog.
 - Nie dodawaj automatycznych commitów z CI ani dokumentacji generowanej przez płatny LLM.
 
 ## Workflow i weryfikacja

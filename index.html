@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Proste gry przeglądarkowe tworzone z pomocą Amp.">
+  <title>Gry</title>
+  <style>
+    :root { color-scheme: light; font-family: system-ui, sans-serif; background: #f4f7fb; color: #172033; }
+    * { box-sizing: border-box; }
+    body { margin: 0; }
+    header, main, footer { width: min(68rem, calc(100% - 2rem)); margin-inline: auto; }
+    header { padding: 3rem 0 1.5rem; }
+    h1 { margin: 0 0 .5rem; font-size: clamp(2rem, 8vw, 3.5rem); }
+    header p { margin: 0; color: #526079; }
+    .games { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(18rem, 100%), 1fr)); gap: 1rem; padding: 1rem 0 3rem; }
+    .game-card { display: flex; flex-direction: column; gap: .8rem; min-height: 16rem; padding: 1.25rem; border: 1px solid #dce3ee; border-radius: 1rem; background: white; box-shadow: 0 .3rem 1.2rem #1d2b4a12; }
+    .game-card h2, .game-card p { margin: 0; }
+    .game-card p { line-height: 1.55; color: #42506a; }
+    .game-meta, .game-actions { display: flex; justify-content: space-between; align-items: center; gap: .75rem; flex-wrap: wrap; }
+    .game-meta, small { color: #68758c; font-size: .85rem; }
+    .game-actions { margin-top: auto; }
+    a { color: #2457c5; }
+    .play { display: inline-block; padding: .65rem 1rem; border-radius: .7rem; background: #2457c5; color: white; font-weight: 700; text-decoration: none; }
+    .play:focus-visible, .play:hover { background: #173e94; }
+    .empty { padding: 2rem; border-radius: 1rem; background: white; text-align: center; color: #526079; }
+    footer { padding: 0 0 2rem; color: #68758c; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Gry</h1>
+    <p>Proste gry przeglądarkowe tworzone z pomocą Amp.</p>
+  </header>
+  <main class="games">
+      <p class="empty">Pierwsze gry pojawią się wkrótce.</p>
+  </main>
+  <footer><a href="https://github.com/rdslw/gry">Kod źródłowy na GitHubie</a></footer>
+</body>
+</html>
