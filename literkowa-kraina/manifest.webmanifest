@@ -1,0 +1,10 @@
+{
+  "name": "Literkowa Kraina",
+  "short_name": "Literki",
+  "lang": "pl",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#ece8ff",
+  "theme_color": "#7557e8",
+  "icons": [{ "src": "./icon-256.png", "sizes": "256x256", "type": "image/png" }]
+}
